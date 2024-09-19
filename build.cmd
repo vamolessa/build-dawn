@@ -132,6 +132,12 @@ rem
 rem Done!
 rem
 
+dir dawn.build-%ARCH%\gen\include\dawn\
+dir dawn.build-%ARCH%\gen\include\
+dir dawn.build-%ARCH%\Release\
+dir dawn.build-%ARCH%\src\dawn\native\Release\
+dir dawn.build-%ARCH%\src\tint\
+
 if "%GITHUB_WORKFLOW%" neq "" (
 
   rem
