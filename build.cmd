@@ -115,7 +115,7 @@ cmake                                         ^
   || exit /b 1
 
 set CL=/Wv:18
-cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn --parallel || exit /b 1
+cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || exit /b 1
 
 rem
 rem prepare output folder
@@ -127,31 +127,12 @@ echo %DAWN_COMMIT% > dawn-%ARCH%\commit.txt
 
 copy /y dawn.build-%ARCH%\gen\include\dawn\webgpu.h               dawn-%ARCH%
 copy /y dawn.build-%ARCH%\Release\webgpu_dawn.dll                 dawn-%ARCH%
+copy /y dawn.build-%ARCH%\Release\tint.exe                        tint-%ARCH%
 copy /y dawn.build-%ARCH%\src\dawn\native\Release\webgpu_dawn.lib dawn-%ARCH%
 
 rem
 rem Done!
 rem
-
-echo =================================================================================
-echo =================================================================================
-echo =================================================================================
-echo =================================================================================
-echo =================================================================================
-
-dir dawn.build-%ARCH%\gen\include\dawn\
-dir dawn.build-%ARCH%\gen\include\
-dir dawn.build-%ARCH%\Release\
-dir dawn.build-%ARCH%\src\dawn\native\Release\
-
-echo =================================================================================
-echo =================================================================================
-
-dir dawn.build-%ARCH%\src\tint\Release
-
-echo =================================================================================
-echo =================================================================================
-echo =================================================================================
 
 if "%GITHUB_WORKFLOW%" neq "" (
 
@@ -159,5 +140,5 @@ if "%GITHUB_WORKFLOW%" neq "" (
   rem GitHub actions stuff
   rem
 
-  %SZIP% a -y -mx=9 dawn-%ARCH%-%BUILD_DATE%.zip dawn-%ARCH% || exit /b 1
+  %SZIP% a -y -mx=9 dawn-%ARCH%-%BUILD_DATE%.zip dawn-%ARCH% tint-%ARCH% || exit /b 1
 )
