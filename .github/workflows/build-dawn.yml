@@ -22,7 +22,7 @@ jobs:
           echo DAWN_COMMIT=`git ls-remote https://dawn.googlesource.com/dawn HEAD | awk '{ print $1 }'` >> ${GITHUB_OUTPUT}
           echo BUILD_DATE=`date +'%Y-%m-%d'` >> ${GITHUB_OUTPUT}
       
-  build:
+  build-windows:
     runs-on: windows-2022
     needs: info
     strategy:
@@ -44,14 +44,41 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dawn-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
-          path: dawn-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          name: dawn-win-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-win-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          if-no-files-found: error
+          compression-level: 0
+
+  build-mac:
+    runs-on: macos-latest
+    needs: info
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    env:
+      DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
+      BUILD_DATE: ${{ needs.info.outputs.BUILD_DATE }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Build Script
+        id: build
+        shell: bash
+        run: ./build.sh ${{ matrix.arch }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dawn-mac-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-mac-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
           if-no-files-found: error
           compression-level: 0
 
   release:
     runs-on: ubuntu-24.04
-    needs: [info, build]
+    needs: [info, build-windows, build-mac]
     permissions:
       contents: write
     env:
@@ -66,7 +93,7 @@ jobs:
       - name: Get Artifacts From Build Steps
         uses: actions/download-artifact@v4
         with:
-          pattern: dawn-*-${{ needs.info.outputs.BUILD_DATE }}
+          pattern: dawn-*-*-${{ needs.info.outputs.BUILD_DATE }}
           merge-multiple: true
 
       - name: Upload Artifacts to GitHub Release
