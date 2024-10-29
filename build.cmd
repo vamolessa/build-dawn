@@ -140,5 +140,5 @@ if "%GITHUB_WORKFLOW%" neq "" (
   rem GitHub actions stuff
   rem
 
-  %SZIP% a -y -mx=9 dawn-%ARCH%-%BUILD_DATE%.zip dawn-%ARCH% || exit /b 1
+  %SZIP% a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-%ARCH% || exit /b 1
 )
