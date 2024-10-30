@@ -97,4 +97,4 @@ jobs:
           merge-multiple: true
 
       - name: Upload Artifacts to GitHub Release
-        run: gh release upload '${{ needs.info.outputs.BUILD_DATE }}' dawn-*-${{ needs.info.outputs.BUILD_DATE }}.zip -R "${GITHUB_REPOSITORY}"
+        run: gh release upload '${{ needs.info.outputs.BUILD_DATE }}' dawn-*-*-${{ needs.info.outputs.BUILD_DATE }}.zip -R "${GITHUB_REPOSITORY}"
