@@ -138,7 +138,8 @@ if [ ! -z "$GITHUB_WORKFLOW" ]; then
   # GitHub actions stuff
   #
 
-  $SZIP a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-$ARCH || exit 1
+  #$SZIP a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-$ARCH || exit 1
+  zip -9 -d -r dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-$ARCH || exit 1
 fi
 
 ###
