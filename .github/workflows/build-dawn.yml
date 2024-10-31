@@ -7,7 +7,7 @@ on:
     - cron: "0 0 * * 0"
   push:
     branches:
-      - main
+      - main-disabled
 
 jobs:
   info:
@@ -59,7 +59,7 @@ jobs:
     needs: info
     strategy:
       matrix:
-        arch: [x64, arm64]
+        arch: [arm64]
     env:
       DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
       BUILD_DATE: ${{ needs.info.outputs.BUILD_DATE }}
