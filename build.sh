@@ -63,7 +63,7 @@ fi
 # clone dawn
 #
 
-if ["$DAWN_COMMIT" == ""]; then
+if [ "$DAWN_COMMIT" == "" ]; then
   DAWN_COMMIT=$(git ls-remote https://dawn.googlesource.com/dawn HEAD | cut -w -f 1)
 fi
 
@@ -90,10 +90,10 @@ popd
 # build dawn
 #
 
+#  -A $ARCH                                    \
 cmake                                         \
   -S dawn                                     \
   -B dawn.build-$ARCH                         \
-  -A $ARCH                                    \
   -D CMAKE_BUILD_TYPE=Release                 \
   -D CMAKE_POLICY_DEFAULT_CMP0091=NEW         \
   -D CMAKE_POLICY_DEFAULT_CMP0092=NEW         \
