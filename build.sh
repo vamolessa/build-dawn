@@ -125,10 +125,5 @@ if [ ! -z "$GITHUB_WORKFLOW" ]; then
   #
 
   #$SZIP a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-$ARCH || exit 1
-  zip -9 -d -r dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-$ARCH || exit 1
+  zip -9 -d -r dawn-mac-$ARCH-$BUILD_DATE.zip dawn-$ARCH || exit 1
 fi
-
-###
-
-echo "ARCH = $ARCH !!"
-echo "placeholder" > dawn-mac-${ARCH}-${BUILD_DATE}.zip
