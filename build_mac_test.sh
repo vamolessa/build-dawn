@@ -11,3 +11,5 @@ mkdir -p out/Debug
 cd out/Debug
 cmake ../..
 make # -j N for N-way parallel build
+
+ls -R
