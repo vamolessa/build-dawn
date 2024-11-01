@@ -67,11 +67,8 @@ git fetch origin $DAWN_COMMIT || exit 1
 git checkout --force FETCH_HEAD || exit 1
 
 cp -f scripts/standalone.gclient .gclient
-sed -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/swiftshader'\: /,+3d" -e "/'third_party\/angle'\: /,+3d" -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" -e "/'third_party\/khronos\/OpenGL-Registry'\: /,+3d" DEPS || exit 1
+#sed -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/swiftshader'\: /,+3d" -e "/'third_party\/angle'\: /,+3d" -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" -e "/'third_party\/khronos\/OpenGL-Registry'\: /,+3d" DEPS || exit 1
 gclient sync -f -D -R || exit 1
-
-echo "DEPS file:"
-cat DEPS
 
 popd
 
