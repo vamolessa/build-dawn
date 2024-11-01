@@ -16,3 +16,5 @@ ls -R
 
 zip -9 -d -r dawn-mac-$ARCH-$BUILD_DATE.zip .
 cp dawn-mac-$ARCH-$BUILD_DATE.zip ../..
+
+ls ../..
