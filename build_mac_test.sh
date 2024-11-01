@@ -13,3 +13,6 @@ cmake ../..
 make # -j N for N-way parallel build
 
 ls -R
+
+zip -9 -d -r dawn-mac-$ARCH-$BUILD_DATE.zip .
+cp dawn-mac-$ARCH-$BUILD_DATE.zip ../..
