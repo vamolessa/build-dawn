@@ -35,25 +35,11 @@ which cmake > /dev/null || (
 )
 
 #
-# 7-Zip
-#
-
-#if exist "%ProgramFiles%\7-Zip\7z.exe" (
-#  set SZIP="%ProgramFiles%\7-Zip\7z.exe"
-#) else (
-#  where /q 7za.exe || (
-#    echo ERROR: 7-Zip installation or "7za.exe" not found
-#    exit /b 1
-#  )
-#  set SZIP=7za.exe
-#)
-
-#
 # get depot tools
 #
 
-PATH=$PWD/depot_tools:$PATH
-DEPOT_TOOLS_MAC_TOOLCHAIN=0
+export PATH=$PWD/depot_tools:$PATH
+export DEPOT_TOOLS_MAC_TOOLCHAIN=0
 
 if [ ! -d depot_tools ]; then
   git clone --depth=1 --no-tags --single-branch https://chromium.googlesource.com/chromium/tools/depot_tools.git || exit 1
@@ -81,7 +67,8 @@ git fetch origin $DAWN_COMMIT || exit 1
 git checkout --force FETCH_HEAD || exit 1
 
 cp -f scripts/standalone.gclient .gclient
-sed -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/swiftshader'\: /,+3d" -e "/'third_party\/angle'\: /,+3d" -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" -e "/'third_party\/khronos\/OpenGL-Registry'\: /,+3d" DEPS || exit 1
+#sed -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/swiftshader'\: /,+3d" -e "/'third_party\/angle'\: /,+3d" -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" -e "/'third_party\/khronos\/OpenGL-Registry'\: /,+3d" DEPS || exit 1
+sed -i.bak -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" DEPS || exit 1
 gclient sync -f -D -R || exit 1
 
 popd
