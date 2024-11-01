@@ -71,6 +71,9 @@ cp -f scripts/standalone.gclient .gclient
 sed -i.bak -e "/'third_party\/webgpu-cts'\: /,+3d" -e "/'third_party\/vulkan-validation-layers\/src'\: /,+3d" DEPS || exit 1
 gclient sync -f -D -R || exit 1
 
+echo "DEPS file:"
+cat DEPS
+
 popd
 
 #
