@@ -5,9 +5,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
-  push:
-    branches:
-      - main-disabled
 
 jobs:
   info:
@@ -23,6 +20,7 @@ jobs:
           echo BUILD_DATE=`date +'%Y-%m-%d'` >> ${GITHUB_OUTPUT}
       
   build-windows:
+    if: false
     runs-on: windows-2022
     needs: info
     strategy:
