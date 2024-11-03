@@ -31,22 +31,6 @@ cd out/Debug
 cmake ../..
 make # -j N for N-way parallel build
 
-echo "======================================================================================"
-echo "====================================================================================== ls ."
-echo "======================================================================================"
-
-ls
-
-echo "======================================================================================"
-echo "====================================================================================== find -name libdawn_native"
-echo "======================================================================================"
-
-find ../.. -type f -name 'libdawn_native.*'
-
-echo "======================================================================================"
-echo "======================================================================================"
-echo "======================================================================================"
-
 # Zip build output
 
 cd ../..
@@ -54,7 +38,6 @@ cd ../..
 mkdir dawn-$ARCH
 
 cp out/Debug/gen/include/dawn/webgpu.h             dawn-$ARCH
-cp out/Debug/webgpu_dawn.so                        dawn-$ARCH
 cp out/Debug/tint                                  dawn-$ARCH
 cp out/Debug/src/dawn/native/libdawn_native.a      dawn-$ARCH
 cp out/Debug/Makefile                              dawn-$ARCH
@@ -62,4 +45,4 @@ cp out/Debug/Makefile                              dawn-$ARCH
 
 rm -f dawn-mac-$ARCH-$BUILD_DATE.zip
 zip -9 -r dawn-mac-$ARCH-$BUILD_DATE.zip dawn-$ARCH || echo "could not zip artifacts"
-cp dawn-mac-$ARCH-$BUILD_DATE.zip .. || echo "could not copy zip artifacts to root dir"
+cp -f dawn-mac-$ARCH-$BUILD_DATE.zip .. || echo "could not copy zip artifacts to root dir"
