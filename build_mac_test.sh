@@ -1,3 +1,25 @@
+cd "$(dirname "$0")"
+
+#
+# build architecture
+#
+
+if [ "$1" == "x64" ]; then
+  ARCH=x64
+elif [ "$1" == "arm64" ]; then
+  ARCH=arm64
+elif [ -z "$1"]; then
+  echo "Unknown target '$1' architecture!"
+  exit 1
+elif [ "$PROCESSOR_ARCHITECTURE" == "AMD64" ]; then
+  ARCH=x64
+elif [ "$PROCESSOR_ARCHITECTURE" == "ARM64" ]; then
+  ARCH=arm64
+else
+  echo "Unknown target architecture!"
+  exit 1
+fi
+
 # Clone the repo as "dawn"
 git clone https://dawn.googlesource.com/dawn dawn && cd dawn
 
@@ -54,3 +76,9 @@ echo "==========================================================================
 echo "======================================================================================"
 
 find . -type f -name '*tint_cmd_tint_cmd*'
+
+echo "======================================================================================"
+echo "====================================================================================== find -name tint"
+echo "======================================================================================"
+
+find . -type f -name 'tint'
