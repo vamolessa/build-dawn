@@ -76,6 +76,10 @@ jobs:
         shell: bash
         run: bash build_mac_test.sh ${{ matrix.arch }}
 
+      - name: List Folder Content
+        shell: bash
+        run: ls
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
