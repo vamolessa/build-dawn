@@ -1,24 +1,7 @@
 cd "$(dirname "$0")"
 
-#
-# build architecture
-#
-
-if [ "$1" == "x64" ]; then
-  ARCH=x64
-elif [ "$1" == "arm64" ]; then
-  ARCH=arm64
-elif [ -z "$1"]; then
-  echo "Unknown target '$1' architecture!"
-  exit 1
-elif [ "$PROCESSOR_ARCHITECTURE" == "AMD64" ]; then
-  ARCH=x64
-elif [ "$PROCESSOR_ARCHITECTURE" == "ARM64" ]; then
-  ARCH=arm64
-else
-  echo "Unknown target architecture!"
-  exit 1
-fi
+OS=$1
+ARCH=$2
 
 # Clone the repo as "dawn"
 git clone https://dawn.googlesource.com/dawn dawn && cd dawn
@@ -35,14 +18,14 @@ make # -j N for N-way parallel build
 
 cd ../..
 
-mkdir dawn-$ARCH
+mkdir dawn-$OS-$ARCH
 
-cp out/Debug/gen/include/dawn/webgpu.h             dawn-$ARCH
-cp out/Debug/tint                                  dawn-$ARCH
-cp out/Debug/src/dawn/native/libdawn_native.a      dawn-$ARCH
-cp out/Debug/Makefile                              dawn-$ARCH
+cp out/Debug/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
+cp out/Debug/tint                                  dawn-$OS-$ARCH
+cp out/Debug/src/dawn/native/libdawn_native.a      dawn-$OS-$ARCH
+cp out/Debug/Makefile                              dawn-$OS-$ARCH
 #cp out/Debug/src/dawn/native/libdawn_native.dylib  dawn-$ARCH
 
-rm -f dawn-mac-$ARCH-$BUILD_DATE.zip
-zip -9 -r dawn-mac-$ARCH-$BUILD_DATE.zip dawn-$ARCH || echo "could not zip artifacts"
-cp -f dawn-mac-$ARCH-$BUILD_DATE.zip .. || echo "could not copy zip artifacts to root dir"
+rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
+zip -9 -r dawn-$OS-$ARCH-$BUILD_DATE.zip dawn-$OS-$ARCH || echo "could not zip artifacts"
+cp -f dawn-$OS-$ARCH-$BUILD_DATE.zip .. || echo "could not copy zip artifacts to root dir"
