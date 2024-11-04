@@ -73,7 +73,7 @@ jobs:
       - name: Run Build Script
         id: build
         shell: bash
-        run: bash build.sh ${{ matrix.arch }}
+        run: bash build.sh mac ${{ matrix.arch }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
