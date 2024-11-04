@@ -2,7 +2,7 @@ cd "$(dirname "$0")"
 
 OS=$1
 ARCH=$2
-OUT_DIR=out/Release
+OUT_DIR="out/Release"
 
 # Clone the repo as "dawn"
 git clone https://dawn.googlesource.com/dawn dawn && cd dawn
@@ -13,8 +13,8 @@ python tools/fetch_dawn_dependencies.py
 mkdir -p $OUT_DIR
 cd $OUT_DIR
 
-cmake ../..                                   \
-  -S dawn                                     \
+cmake                                         \
+  -S ../..                                    \
   -D CMAKE_BUILD_TYPE=Release                 \
   -D BUILD_SHARED_LIBS=OFF                    \
   -D BUILD_SAMPLES=OFF                        \
