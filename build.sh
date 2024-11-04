@@ -41,20 +41,7 @@ mkdir dawn-$OS-$ARCH
 
 cp $OUT_DIR/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
 cp $OUT_DIR/tint                                  dawn-$OS-$ARCH
-cp $OUT_DIR/src/dawn/native/libdawn_native.a      dawn-$OS-$ARCH
 cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.dylib  dawn-$OS-$ARCH
-
-echo "==============================================================="
-echo "=============================================================== find"
-echo "==============================================================="
-
-find . -name '*webgpu_dawn*' -type f
-find . -name '*dawn_native*' -type f
-find . -name '*.dylib' -type f
-
-echo "==============================================================="
-echo "==============================================================="
-echo "==============================================================="
 
 rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
 zip -9 -r dawn-$OS-$ARCH-$BUILD_DATE.zip dawn-$OS-$ARCH || echo "could not zip artifacts"
