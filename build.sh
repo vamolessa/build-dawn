@@ -23,8 +23,7 @@ mkdir dawn-$OS-$ARCH
 cp out/Debug/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
 cp out/Debug/tint                                  dawn-$OS-$ARCH
 cp out/Debug/src/dawn/native/libdawn_native.a      dawn-$OS-$ARCH
-cp out/Debug/Makefile                              dawn-$OS-$ARCH
-#cp out/Debug/src/dawn/native/libdawn_native.dylib  dawn-$ARCH
+#cp out/Debug/src/dawn/native/libdawn_native.dylib  dawn-$OS-$ARCH
 
 rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
 zip -9 -r dawn-$OS-$ARCH-$BUILD_DATE.zip dawn-$OS-$ARCH || echo "could not zip artifacts"
