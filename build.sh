@@ -42,7 +42,7 @@ mkdir dawn-$OS-$ARCH
 cp $OUT_DIR/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
 cp $OUT_DIR/tint                                  dawn-$OS-$ARCH
 cp $OUT_DIR/src/dawn/native/libdawn_native.a      dawn-$OS-$ARCH
-#cp $OUT_DIR/src/dawn/native/libdawn_native.dylib  dawn-$OS-$ARCH
+cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.dylib  dawn-$OS-$ARCH
 
 echo "==============================================================="
 echo "=============================================================== find"
