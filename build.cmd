@@ -121,14 +121,14 @@ rem
 rem prepare output folder
 rem
 
-mkdir dawn-%ARCH%
+mkdir dawn-win-%ARCH%
 
-echo %DAWN_COMMIT% > dawn-%ARCH%\commit.txt
+echo %DAWN_COMMIT% > dawn-win-%ARCH%\commit.txt
 
-copy /y dawn.build-%ARCH%\gen\include\dawn\webgpu.h               dawn-%ARCH%
-copy /y dawn.build-%ARCH%\Release\webgpu_dawn.dll                 dawn-%ARCH%
-copy /y dawn.build-%ARCH%\Release\tint.exe                        dawn-%ARCH%
-copy /y dawn.build-%ARCH%\src\dawn\native\Release\webgpu_dawn.lib dawn-%ARCH%
+copy /y dawn.build-%ARCH%\gen\include\dawn\webgpu.h               dawn-win-%ARCH%
+copy /y dawn.build-%ARCH%\Release\webgpu_dawn.dll                 dawn-win-%ARCH%
+copy /y dawn.build-%ARCH%\Release\tint.exe                        dawn-win-%ARCH%
+copy /y dawn.build-%ARCH%\src\dawn\native\Release\webgpu_dawn.lib dawn-win-%ARCH%
 
 rem
 rem Done!
@@ -140,5 +140,5 @@ if "%GITHUB_WORKFLOW%" neq "" (
   rem GitHub actions stuff
   rem
 
-  %SZIP% a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-%ARCH% || exit /b 1
+  %SZIP% a -y -mx=9 dawn-win-%ARCH%-%BUILD_DATE%.zip dawn-win-%ARCH% || exit /b 1
 )
