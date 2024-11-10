@@ -24,6 +24,7 @@ cmake                                         \
   -D DAWN_ENABLE_OPENGLES=OFF                 \
   -D DAWN_ENABLE_VULKAN=ON                    \
   -D DAWN_USE_GLFW=OFF                        \
+  -D DAWN_ENABLE_SPIRV_VALIDATION=ON          \
   -D DAWN_BUILD_SAMPLES=OFF                   \
   -D TINT_ENABLE_INSTALL=ON                   \
   -D TINT_BUILD_SPV_READER=ON                 \
