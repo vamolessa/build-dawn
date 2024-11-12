@@ -33,7 +33,7 @@ cmake                                         \
   || exit 1
 
 #make # -j N for N-way parallel build
-cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn tint_cmd_tint_cmd || exit 1
+cmake --build . --config Release --target webgpu_dawn tint_cmd_tint_cmd || exit 1
 
 # Zip build output
 
