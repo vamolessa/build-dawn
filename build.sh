@@ -32,36 +32,12 @@ cmake                                         \
   -D TINT_BUILD_TESTS=OFF                     \
   || exit 1
 
-make # -j N for N-way parallel build
+#make # -j N for N-way parallel build
+cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn tint_cmd_tint_cmd || exit /b 1
 
 # Zip build output
 
 cd ../..
-
-echo "============================================================="
-echo "============================================================= find tint"
-echo "============================================================="
-
-find . -type f -name 'tint.h'
-find . -type f -name 'tint_api.h'
-find $OUT_DIR -type f -name 'libtint*'
-find $OUT_DIR -type f -name '*tint.dylib'
-
-echo "============================================================="
-echo "============================================================= find .dylib"
-echo "============================================================="
-
-find $OUT_DIR -type f -name '*.dylib'
-
-echo "============================================================="
-echo "============================================================= ls gen/include/"
-echo "============================================================="
-
-ls $OUT_DIR/gen/include/
-
-echo "============================================================="
-echo "============================================================="
-echo "============================================================="
 
 mkdir dawn-$OS-$ARCH
 
@@ -70,8 +46,6 @@ echo $DAWN_COMMIT > dawn-$OS-$ARCH/commit.txt
 cp $OUT_DIR/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
 cp $OUT_DIR/tint                                  dawn-$OS-$ARCH
 cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.dylib  dawn-$OS-$ARCH
-cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.a      dawn-$OS-$ARCH
-
 cp $OUT_DIR/src/tint/libtint_api.a                dawn-$OS-$ARCH
 
 rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
