@@ -43,6 +43,7 @@ echo "============================================================= find tint"
 echo "============================================================="
 
 find . -type f -name 'tint.h'
+find . -type f -name 'tint_api.h'
 find $OUT_DIR -type f -name 'libtint*'
 find $OUT_DIR -type f -name '*tint.dylib'
 
@@ -53,10 +54,10 @@ echo "============================================================="
 find $OUT_DIR -type f -name '*.dylib'
 
 echo "============================================================="
-echo "============================================================= ls gen/include/tint"
+echo "============================================================= ls gen/include/"
 echo "============================================================="
 
-ls $OUT_DIR/gen/include/tint
+ls $OUT_DIR/gen/include/
 
 echo "============================================================="
 echo "============================================================="
@@ -70,6 +71,8 @@ cp $OUT_DIR/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
 cp $OUT_DIR/tint                                  dawn-$OS-$ARCH
 cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.dylib  dawn-$OS-$ARCH
 cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.a      dawn-$OS-$ARCH
+
+cp $OUT_DIR/src/tint/libtint_api.a                dawn-$OS-$ARCH
 
 rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
 zip -9 -r dawn-$OS-$ARCH-$BUILD_DATE.zip dawn-$OS-$ARCH || echo "could not zip artifacts"
