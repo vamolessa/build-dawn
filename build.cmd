@@ -103,8 +103,8 @@ cmake                                         ^
   -D DAWN_ENABLE_D3D12=ON                     ^
   -D DAWN_ENABLE_D3D11=ON                     ^
   -D DAWN_ENABLE_NULL=OFF                     ^
-  -D DAWN_ENABLE_DESKTOP_GL=OFF               ^
-  -D DAWN_ENABLE_OPENGLES=OFF                 ^
+  -D DAWN_ENABLE_DESKTOP_GL=ON                ^
+  -D DAWN_ENABLE_OPENGLES=ON                  ^
   -D DAWN_ENABLE_VULKAN=ON                    ^
   -D DAWN_ENABLE_SPIRV_VALIDATION=ON          ^
   -D DAWN_USE_GLFW=OFF                        ^
@@ -112,6 +112,7 @@ cmake                                         ^
   -D TINT_ENABLE_INSTALL=ON                   ^
   -D TINT_BUILD_SPV_READER=ON                 ^
   -D TINT_BUILD_WGSL_WRITER=ON                ^
+  -D TINT_BUILD_GLSL_WRITER=ON                ^
   -D TINT_BUILD_TESTS=OFF                     ^
   || exit /b 1
 
