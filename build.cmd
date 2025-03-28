@@ -103,8 +103,8 @@ cmake                                         ^
   -D DAWN_ENABLE_D3D12=ON                     ^
   -D DAWN_ENABLE_D3D11=ON                     ^
   -D DAWN_ENABLE_NULL=OFF                     ^
-  -D DAWN_ENABLE_DESKTOP_GL=ON                ^
-  -D DAWN_ENABLE_OPENGLES=ON                  ^
+  -D DAWN_ENABLE_DESKTOP_GL=OFF               ^
+  -D DAWN_ENABLE_OPENGLES=OFF                 ^
   -D DAWN_ENABLE_VULKAN=ON                    ^
   -D DAWN_ENABLE_SPIRV_VALIDATION=ON          ^
   -D DAWN_USE_GLFW=OFF                        ^
