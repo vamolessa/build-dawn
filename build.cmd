@@ -117,13 +117,13 @@ cmake                                         ^
   || exit /b 1
 
 set CL=/Wv:18
-cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || exit /b 1
+cmake.exe --build dawn.build-%ARCH% --config Release --target webgpu_dawn tint_cmd_tint_cmd tint_api --parallel || exit /b 1
 
 echo ============================================================================================
 echo ============================================================================================
 echo ============================================================================================
 
-dir dawn.build-%ARCH%\Release\src\tint
+dir dawn.build-%ARCH%\Release\
 
 echo ============================================================================================
 echo ============================================================================================
