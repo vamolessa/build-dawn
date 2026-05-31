@@ -19,13 +19,13 @@ index 673f23fcb1..587f39ceb0 100644
  // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
 +#define DxcCreateInstance DxcCreateInstance_FromWindowsHeadersWhatever
- #include "dawn/native/d3d12/PlatformFunctionsD3D12.h"
+ #include "src/dawn/native/d3d12/PlatformFunctionsD3D12.h"
  
  #include <array>
 @@ -33,11 +34,20 @@
  #include <utility>
  
- #include "dawn/common/SystemUtils.h"
+ #include "src/dawn/common/SystemUtils.h"
 +#undef DxcCreateInstance
 +
 +extern "C" HRESULT WINAPI DXC_Init(void);
