@@ -11,7 +11,7 @@ index efa040a3ad..626b194eee 100644
  
      set(webgpu_dawn_public_headers)
 diff --git a/src/dawn/native/d3d12/PlatformFunctionsD3D12.cpp b/src/dawn/native/d3d12/PlatformFunctionsD3D12.cpp
-index 673f23fcb1..587f39ceb0 100644
+index 21489b4c5f..dbadffd862 100644
 --- a/src/dawn/native/d3d12/PlatformFunctionsD3D12.cpp
 +++ b/src/dawn/native/d3d12/PlatformFunctionsD3D12.cpp
 @@ -25,6 +25,7 @@
@@ -22,10 +22,10 @@ index 673f23fcb1..587f39ceb0 100644
  #include "src/dawn/native/d3d12/PlatformFunctionsD3D12.h"
  
  #include <array>
-@@ -33,11 +34,20 @@
- #include <utility>
+@@ -34,11 +35,20 @@
  
  #include "src/dawn/common/SystemUtils.h"
+ #include "src/utils/log.h"
 +#undef DxcCreateInstance
 +
 +extern "C" HRESULT WINAPI DXC_Init(void);
@@ -44,7 +44,7 @@ index 673f23fcb1..587f39ceb0 100644
  
  MaybeError PlatformFunctions::Initialize(std::span<const std::string> searchPaths) {
      DAWN_TRY(Base::Initialize());
-@@ -116,30 +126,18 @@ MaybeError PlatformFunctions::EnsureDXCLibraries(std::span<const std::string> se
+@@ -185,30 +195,18 @@ MaybeError PlatformFunctions::EnsureDXCLibraries(std::span<const std::string> se
      // LoadDXIL and LoadDXCompiler will fail in UWP, but Initialize() can still be
      // successfully executed.
  
