@@ -46,8 +46,8 @@ fi
 git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit 1
 git -C dawn reset --hard FETCH_HEAD                            || exit 1
 
-if [ -e "dawn\third_party\directx-shader-compiler\src" ]; then
-  git -C "dawn\third_party\directx-shader-compiler\src" reset --hard HEAD || exit 1
+if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
+  git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || exit 1
 fi
 
 #
@@ -67,7 +67,7 @@ git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/d
 # configure dawn build
 #
 
-cmake.exe                                     \
+cmake                                         \
   -S dawn                                     \
   -B dawn.build-$TARGET_ARCH                  \
   -A $TARGET_ARCH                             \
@@ -100,71 +100,67 @@ cmake.exe                                     \
   -D TINT_BUILD_CMD_TOOLS=ON                  \
   || exit 1
 
-# TODO: continue here
-
-####################################################################################################
-
-OS=$1
-ARCH=$2
-OUT_DIR="out/Release"
-
-# Clone the repo as "dawn"
-git clone https://dawn.googlesource.com/dawn dawn && cd dawn
-
-# Fetch dependencies (lose equivalent of gclient sync)
-python tools/fetch_dawn_dependencies.py
-
-#
-# patches
-#
-
-mkdir -p $OUT_DIR
-cd $OUT_DIR
-
-cmake                                         \
-  -S dawn                                    \
-  -D CMAKE_BUILD_TYPE=Release                 \
-  -D BUILD_SHARED_LIBS=OFF                    \
-  -D BUILD_SAMPLES=OFF                        \
-  -D DAWN_ENABLE_METAL=ON                     \
-  -D DAWN_ENABLE_NULL=OFF                     \
-  -D DAWN_ENABLE_DESKTOP_GL=OFF               \
-  -D DAWN_ENABLE_OPENGLES=OFF                 \
-  -D DAWN_ENABLE_VULKAN=ON                    \
-  -D DAWN_USE_GLFW=OFF                        \
-  -D DAWN_DXC_ENABLE_ASSERTS_IN_NDEBUG=OFF    \
-  -D DAWN_USE_BUILT_DXC=ON                    \
-  -D DAWN_ENABLE_SPIRV_VALIDATION=ON          \
-  -D DAWN_BUILD_SAMPLES=OFF                   \
-  -D TINT_BUILD_TESTS=OFF                     \
-  -D TINT_BUILD_SPV_READER=ON                 \
-  -D TINT_BUILD_WGSL_WRITER=ON                \
-  -D TINT_BUILD_GLSL_WRITER=ON                \
-  -D TINT_BUILD_MSL_WRITER=ON                 \
-  -D TINT_BUILD_CMD_TOOLS=ON                  \
-  || exit 1
-
-
 if [ "$HOST_ARCH" != "$TARGET_ARCH" ]; then
-  
+
+  #
+  # build native architecture tblgen executables for dxc
+  #
+
+  cmake                                             \
+    -S dawn/third_party/directx-shader-compiler/src \
+    -B "dawn.build-$TARGET_ARCH/dxc-native"         \
+    -A "$HOST_ARCH"                                 \
+    -D CMAKE_BUILD_TYPE=Release                     \
+    -D BUILD_SHARED_LIBS=OFF                        \
+    -D LLVM_TARGETS_TO_BUILD=None                   \
+    -D LLVM_ENABLE_WARNINGS=OFF                     \
+    -D LLVM_ENABLE_EH=ON                            \
+    -D LLVM_ENABLE_RTTI=ON                          \
+    || exit 1
+
+  # first build target architecture tblgen exe's
+  cmake --build "dawn.build-$TARGET_ARCH" --config Release --target llvm-tblgen clang-tblgen || exit 1
+
+  # then build host architecture tblgen's
+  cmake --build "dawn.build-$TARGET_ARCH/dxc-native" --config Release --target llvm-tblgen clang-tblgen || exit 1
+
+  # move host arch exe's (newer timestamp) over target arch exe's (older timestamp)
+  # so next dawn build steps will be able to use these exe's for different target arch
+  mv -f "dawn.build-$TARGET_ARCH/dxc-native/Release/bin/llvm-tblgen"  "dawn.build-$TARGET_ARCH/third_party/directx-shader-compiler/src/Release/bin/llvm-tblgen"
+  mv -f "dawn.build-$TARGET_ARCH/dxc-native/Release/bin/clang-tblgen" "dawn.build-$TARGET_ARCH/third_party/directx-shader-compiler/src/Release/bin/clang-tblgen"
+
 fi
 
-#make # -j N for N-way parallel build
-cmake --build . --config Release --target webgpu_dawn tint_cmd_tint_cmd || exit 1
+#
+# run the full dawn build
+#
 
-# Zip build output
+#CL=/Zi /Wv:18
+#LINK=/OPT:REF /OPT:ICF /DEBUG /PDBALTPATH:%%_PDB%% /PDBSTRIPPED
+cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || exit 1
 
-cd ../..
+#
+# prepare output folder
+#
 
-mkdir dawn-$OS-$ARCH
+rm -rf "dawn-$TARGET_ARCH"
+mkdir "dawn-$TARGET_ARCH"
 
-echo $DAWN_COMMIT > dawn-$OS-$ARCH/commit.txt
+echo "$DAWN_COMMIT" > "dawn-$TARGET_ARCH/commit.txt"
 
-cp $OUT_DIR/gen/include/dawn/webgpu.h             dawn-$OS-$ARCH
-cp $OUT_DIR/tint                                  dawn-$OS-$ARCH
-cp $OUT_DIR/src/dawn/native/libwebgpu_dawn.dylib  dawn-$OS-$ARCH
-cp $OUT_DIR/src/tint/libtint_api.a                dawn-$OS-$ARCH
+cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"               "dawn-$TARGET_ARCH"                 || exit 1
+cp -f "dawn.build-$TARGET_ARCH/Release/libwebgpu_dawn.dylib"            "dawn-$TARGET_ARCH"                 || exit 1
+cp -f "dawn.build-$TARGET_ARCH/Release/tint"                            "dawn-$TARGET_ARCH"                 || exit 1
 
-rm -f dawn-$OS-$ARCH-$BUILD_DATE.zip
-zip -9 -r dawn-$OS-$ARCH-$BUILD_DATE.zip dawn-$OS-$ARCH || echo "could not zip artifacts"
-cp -f dawn-$OS-$ARCH-$BUILD_DATE.zip .. || echo "could not copy zip artifacts to root dir"
+#
+# Done!
+#
+
+if [ -n "$GITHUB_WORKFLOW" ]; then
+
+  #
+  # GitHub actions stuff
+  #
+
+  tar -cavf "dawn-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || exit 1
+fi
