@@ -113,6 +113,7 @@ cmake                                         ^
   -D TINT_BUILD_SPV_READER=ON                 ^
   -D TINT_BUILD_WGSL_WRITER=ON                ^
   -D TINT_BUILD_GLSL_WRITER=ON                ^
+  -D TINT_BUILD_MSL_WRITER=ON                 ^
   -D TINT_BUILD_TESTS=OFF                     ^
   || exit /b 1
 

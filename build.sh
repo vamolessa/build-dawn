@@ -10,28 +10,40 @@ git clone https://dawn.googlesource.com/dawn dawn && cd dawn
 # Fetch dependencies (lose equivalent of gclient sync)
 python tools/fetch_dawn_dependencies.py
 
+#
+# patches
+#
+
 mkdir -p $OUT_DIR
 cd $OUT_DIR
 
 cmake                                         \
-  -S ../..                                    \
+  -S dawn                                    \
   -D CMAKE_BUILD_TYPE=Release                 \
   -D BUILD_SHARED_LIBS=OFF                    \
   -D BUILD_SAMPLES=OFF                        \
   -D DAWN_ENABLE_METAL=ON                     \
   -D DAWN_ENABLE_NULL=OFF                     \
   -D DAWN_ENABLE_DESKTOP_GL=OFF               \
-  -D DAWN_ENABLE_OPENGLES=ON                  \
+  -D DAWN_ENABLE_OPENGLES=OFF                 \
   -D DAWN_ENABLE_VULKAN=ON                    \
   -D DAWN_USE_GLFW=OFF                        \
+  -D DAWN_DXC_ENABLE_ASSERTS_IN_NDEBUG=OFF    \
+  -D DAWN_USE_BUILT_DXC=ON                    \
   -D DAWN_ENABLE_SPIRV_VALIDATION=ON          \
   -D DAWN_BUILD_SAMPLES=OFF                   \
-  -D TINT_ENABLE_INSTALL=ON                   \
+  -D TINT_BUILD_TESTS=OFF                     \
   -D TINT_BUILD_SPV_READER=ON                 \
   -D TINT_BUILD_WGSL_WRITER=ON                \
   -D TINT_BUILD_GLSL_WRITER=ON                \
-  -D TINT_BUILD_TESTS=OFF                     \
+  -D TINT_BUILD_MSL_WRITER=ON                 \
+  -D TINT_BUILD_CMD_TOOLS=ON                  \
   || exit 1
+
+
+if [ "$HOST_ARCH" != "$TARGET_ARCH" ]; then
+  
+fi
 
 #make # -j N for N-way parallel build
 cmake --build . --config Release --target webgpu_dawn tint_cmd_tint_cmd || exit 1
