@@ -51,6 +51,7 @@ jobs:
           compression-level: 0
 
   build-mac:
+    if: false # TODO: remove this
     runs-on: macos-latest
     needs: info
     strategy:
@@ -83,6 +84,7 @@ jobs:
           compression-level: 0
 
   build-linux:
+    if: false # TODO: remove this
     runs-on: ubuntu-24.04
     needs: info
     strategy:
