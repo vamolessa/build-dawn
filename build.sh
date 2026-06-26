@@ -34,9 +34,13 @@ fi
 
 echo "dependencies"
 
-command -v git    || echo "ERROR: 'git' not found"    && exit 1
-command -v cmake  || echo "ERROR: 'cmake' not found"  && exit 1
-command -v python || echo "ERROR: 'python' not found" && exit 1
+#command -v git    || echo "ERROR: 'git' not found"    && exit 1
+#command -v cmake  || echo "ERROR: 'cmake' not found"  && exit 1
+#command -v python || echo "ERROR: 'python' not found" && exit 1
+
+command -v git    || echo "ERROR: 'git' not found"
+command -v cmake  || echo "ERROR: 'cmake' not found"
+command -v python || echo "ERROR: 'python' not found"
 
 #
 # clone dawn
