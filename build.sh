@@ -30,9 +30,9 @@ fi
 # dependencies
 #
 
-which git    2> /dev/null || echo "ERROR: 'git' not found"    && exit 1
-which cmake  2> /dev/null || echo "ERROR: 'cmake' not found"  && exit 1
-which python 2> /dev/null || echo "ERROR: 'python' not found" && exit 1
+command -v git    || echo "ERROR: 'git' not found"    && exit 1
+command -v cmake  || echo "ERROR: 'cmake' not found"  && exit 1
+command -v python || echo "ERROR: 'python' not found" && exit 1
 
 #
 # clone dawn
