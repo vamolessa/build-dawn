@@ -94,10 +94,12 @@ else
   METAL_SWITCH=OFF
 fi
 
+  # taken out from right before the first `-D`
+  #-A "$TARGET_ARCH"                          \
+
 cmake                                         \
   -S dawn                                     \
   -B "dawn.build-$TARGET_ARCH"                \
-  -A "$TARGET_ARCH"                           \
   -D CMAKE_C_COMPILER=clang                   \
   -D CMAKE_CXX_COMPILER=clang                 \
   -D CMAKE_BUILD_TYPE=Release                 \
