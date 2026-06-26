@@ -43,15 +43,15 @@ if [ -z "$DAWN_COMMIT" ]; then
 fi
 
 if [ ! -e "dawn" ]; then
-  git init dawn                                                    || exit 1
-  git -C dawn remote add origin https://dawn.googlesource.com/dawn || exit 1
+  git init dawn                                                    || echo "ERROR: could not init dawn git repo" && exit 1
+  git -C dawn remote add origin https://dawn.googlesource.com/dawn || echo "ERROR: could not init dawn git repo" && exit 1
 fi
 
-git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit 1
-git -C dawn reset --hard FETCH_HEAD                            || exit 1
+git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || echo "ERROR: could not fetch from dawn git repo" && exit 1
+git -C dawn reset --hard FETCH_HEAD                            || echo "ERROR: could not fetch from dawn git repo" && exit 1
 
 if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
-  git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || exit 1
+  git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || echo "ERROR: could not reset dxc git" && exit 1
 fi
 
 #
@@ -64,8 +64,8 @@ python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 # patches
 #
 
-git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || exit 1
-git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || exit 1
+git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || echo "ERROR: could not apply dawn-static-dxc-lib patch" && exit 1
+git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || echo "ERROR: could not apply dxc-static-build patch" && exit 1
 
 #
 # configure dawn build
@@ -108,7 +108,7 @@ cmake                                         \
   -D TINT_BUILD_GLSL_WRITER=ON                \
   -D TINT_BUILD_MSL_WRITER=$METAL_SWITCH      \
   -D TINT_BUILD_CMD_TOOLS=ON                  \
-  || exit 1
+  || echo "ERROR: could not cmake configure dawn" && exit 1
 
 if [ "$HOST_ARCH" != "$TARGET_ARCH" ]; then
 
@@ -126,13 +126,13 @@ if [ "$HOST_ARCH" != "$TARGET_ARCH" ]; then
     -D LLVM_ENABLE_WARNINGS=OFF                     \
     -D LLVM_ENABLE_EH=ON                            \
     -D LLVM_ENABLE_RTTI=ON                          \
-    || exit 1
+    || echo "ERROR: could not cmake build dxc" && exit 1
 
   # first build target architecture tblgen exe's
-  cmake --build "dawn.build-$TARGET_ARCH" --config Release --target llvm-tblgen clang-tblgen || exit 1
+  cmake --build "dawn.build-$TARGET_ARCH" --config Release --target llvm-tblgen clang-tblgen || echo "ERROR: could not cmake build tblgen" && exit 1
 
   # then build host architecture tblgen's
-  cmake --build "dawn.build-$TARGET_ARCH/dxc-native" --config Release --target llvm-tblgen clang-tblgen || exit 1
+  cmake --build "dawn.build-$TARGET_ARCH/dxc-native" --config Release --target llvm-tblgen clang-tblgen || echo "ERROR: could not cmake build host arch tblgen" && exit 1
 
   # move host arch exe's (newer timestamp) over target arch exe's (older timestamp)
   # so next dawn build steps will be able to use these exe's for different target arch
@@ -147,7 +147,7 @@ fi
 
 #CL=/Zi /Wv:18
 #LINK=/OPT:REF /OPT:ICF /DEBUG /PDBALTPATH:%%_PDB%% /PDBSTRIPPED
-cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || exit 1
+cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || echo "ERROR: could not cmake build dawn" && exit 1
 
 #
 # prepare output folder
@@ -158,9 +158,9 @@ mkdir "dawn-$TARGET_ARCH"
 
 echo "$DAWN_COMMIT" > "dawn-$TARGET_ARCH/commit.txt"
 
-cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"               "dawn-$TARGET_ARCH"                 || exit 1
-cp -f "dawn.build-$TARGET_ARCH/Release/libwebgpu_dawn.dylib"            "dawn-$TARGET_ARCH"                 || exit 1
-cp -f "dawn.build-$TARGET_ARCH/Release/tint"                            "dawn-$TARGET_ARCH"                 || exit 1
+cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"    "dawn-$TARGET_ARCH" || echo "ERROR: could not copy webgpu.h"       && exit 1
+cp -f "dawn.build-$TARGET_ARCH/Release/libwebgpu_dawn.dylib" "dawn-$TARGET_ARCH" || echo "ERROR: could not copy libwebgpu_dawn" && exit 1
+cp -f "dawn.build-$TARGET_ARCH/Release/tint"                 "dawn-$TARGET_ARCH" || echo "ERROR: could not copy tint"           && exit 1
 
 #
 # Done!
@@ -172,5 +172,5 @@ if [ -n "$GITHUB_WORKFLOW" ]; then
   # GitHub actions stuff
   #
 
-  tar -cavf "dawn-$OS-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || exit 1
+  tar -cavf "dawn-$OS-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || echo "ERROR: could not create final tar" && exit 1
 fi
