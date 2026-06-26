@@ -95,7 +95,7 @@ else
   MAC_SWITCH=OFF
 fi
 
-  # taken out from right before the first `-D`
+  # taken out from right before the first `-D` since makefile target does not support it
   #-A "$TARGET_ARCH"                          \
 
 cmake                                         \
@@ -126,7 +126,7 @@ cmake                                         \
   -D TINT_BUILD_SPV_WRITER=ON                 \
   -D TINT_BUILD_WGSL_WRITER=ON                \
   -D TINT_BUILD_GLSL_WRITER=ON                \
-  -D TINT_BUILD_MSL_WRITER=$MAC_SWITCH        \
+  -D TINT_BUILD_MSL_WRITER=ON                 \
   -D TINT_BUILD_CMD_TOOLS=ON                  \
   || die "could not cmake configure dawn"
 

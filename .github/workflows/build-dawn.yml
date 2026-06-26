@@ -23,7 +23,7 @@ jobs:
           echo BUILD_DATE=`date +'%Y-%m-%d'` >> ${GITHUB_OUTPUT}
 
   build-win:
-    if: false # TODO: remove this
+    if: true
     runs-on: windows-2025
     needs: info
     strategy:
