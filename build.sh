@@ -6,6 +6,8 @@ cd "$(dirname "$0")"
 # build architecture
 #
 
+echo "build architecture"
+
 PROCESSOR_ARCHITECTURE=$(uname -m)
 if [ "$PROCESSOR_ARCHITECTURE" = "x86_64" ]; then
   HOST_ARCH="x64"
@@ -30,6 +32,8 @@ fi
 # dependencies
 #
 
+echo "dependencies"
+
 command -v git    || echo "ERROR: 'git' not found"    && exit 1
 command -v cmake  || echo "ERROR: 'cmake' not found"  && exit 1
 command -v python || echo "ERROR: 'python' not found" && exit 1
@@ -37,6 +41,8 @@ command -v python || echo "ERROR: 'python' not found" && exit 1
 #
 # clone dawn
 #
+
+echo "clone dawn"
 
 if [ -z "$DAWN_COMMIT" ]; then
   DAWN_COMMIT=$(git ls-remote https://dawn.googlesource.com/dawn HEAD | awk '{print $1}')
@@ -58,11 +64,15 @@ fi
 # fetch dependencies
 #
 
+echo "fetch dependencies"
+
 python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 
 #
 # patches
 #
+
+echo "patches"
 
 git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || echo "ERROR: could not apply dawn-static-dxc-lib patch" && exit 1
 git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || echo "ERROR: could not apply dxc-static-build patch" && exit 1
@@ -70,6 +80,8 @@ git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/d
 #
 # configure dawn build
 #
+
+echo "configure dawn build"
 
 if [ "$OS" = "mac" ]; then
   METAL_SWITCH=ON
@@ -116,6 +128,8 @@ if [ "$HOST_ARCH" != "$TARGET_ARCH" ]; then
   # build native architecture tblgen executables for dxc
   #
 
+  echo "build native architecture tblgen executables for dxc"
+
   cmake                                             \
     -S dawn/third_party/directx-shader-compiler/src \
     -B "dawn.build-$TARGET_ARCH/dxc-native"         \
@@ -145,6 +159,8 @@ fi
 # run the full dawn build
 #
 
+echo "run the full dawn build"
+
 #CL=/Zi /Wv:18
 #LINK=/OPT:REF /OPT:ICF /DEBUG /PDBALTPATH:%%_PDB%% /PDBSTRIPPED
 cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || echo "ERROR: could not cmake build dawn" && exit 1
@@ -152,6 +168,8 @@ cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn ti
 #
 # prepare output folder
 #
+
+echo "prepare output folder"
 
 rm -rf "dawn-$TARGET_ARCH"
 mkdir "dawn-$TARGET_ARCH"
@@ -166,11 +184,15 @@ cp -f "dawn.build-$TARGET_ARCH/Release/tint"                 "dawn-$TARGET_ARCH"
 # Done!
 #
 
+echo "Done!"
+
 if [ -n "$GITHUB_WORKFLOW" ]; then
 
   #
   # GitHub actions stuff
   #
+
+  echo "GitHub actions stuff"
 
   tar -cavf "dawn-$OS-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || echo "ERROR: could not create final tar" && exit 1
 fi
