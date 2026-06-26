@@ -40,6 +40,7 @@ echo "dependencies"
 
 command -v git    || die "'git' not found"
 command -v cmake  || die "'cmake' not found"
+command -v clang  || die "'clang' not found"
 command -v python || die "'python' not found"
 
 #
@@ -97,6 +98,8 @@ cmake                                         \
   -S dawn                                     \
   -B "dawn.build-$TARGET_ARCH"                \
   -A "$TARGET_ARCH"                           \
+  -D CMAKE_C_COMPILER=clang                   \
+  -D CMAKE_CXX_COMPILER=clang                 \
   -D CMAKE_BUILD_TYPE=Release                 \
   -D CMAKE_POLICY_DEFAULT_CMP0091=NEW         \
   -D CMAKE_POLICY_DEFAULT_CMP0092=NEW         \
