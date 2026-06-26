@@ -11,12 +11,14 @@ elif [ "$PROCESSOR_ARCHITECTURE" = "arm64" -o "$PROCESSOR_ARCHITECTURE" = "aarch
   HOST_ARCH="arm64"
 fi
 
-if [ "$1" = "x64" ]; then
+OS="$1"
+
+if [ "$2" = "x64" ]; then
   TARGET_ARCH=x64
-elif [ "$1" = "arm64" ]; then
+elif [ "$2" = "arm64" ]; then
   TARGET_ARCH=arm64
-elif [ -n "$1" ]; then
-  echo "Unknown target '$1' architecture"
+elif [ -n "$2" ]; then
+  echo "Unknown target '$2' architecture"
   exit 1
 ) else (
   TARGET_ARCH="$HOST_ARCH"
@@ -67,6 +69,12 @@ git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/d
 # configure dawn build
 #
 
+if [ "$OS" = "mac" ]; then
+  METAL_SWITCH=ON
+else
+  METAL_SWITCH=OFF
+fi
+
 cmake                                         \
   -S dawn                                     \
   -B dawn.build-$TARGET_ARCH                  \
@@ -84,7 +92,7 @@ cmake                                         \
   -D DAWN_ENABLE_DESKTOP_GL=OFF               \
   -D DAWN_ENABLE_OPENGLES=OFF                 \
   -D DAWN_ENABLE_VULKAN=ON                    \
-  -D DAWN_ENABLE_METAL=ON                     \
+  -D DAWN_ENABLE_METAL=$METAL_SWITCH          \
   -D DAWN_USE_GLFW=OFF                        \
   -D DAWN_ENABLE_SPIRV_VALIDATION=OFF         \
   -D DAWN_DXC_ENABLE_ASSERTS_IN_NDEBUG=OFF    \
@@ -96,7 +104,7 @@ cmake                                         \
   -D TINT_BUILD_SPV_WRITER=ON                 \
   -D TINT_BUILD_WGSL_WRITER=ON                \
   -D TINT_BUILD_GLSL_WRITER=ON                \
-  -D TINT_BUILD_MSL_WRITER=ON                 \
+  -D TINT_BUILD_MSL_WRITER=$METAL_SWITCH      \
   -D TINT_BUILD_CMD_TOOLS=ON                  \
   || exit 1
 
@@ -162,5 +170,5 @@ if [ -n "$GITHUB_WORKFLOW" ]; then
   # GitHub actions stuff
   #
 
-  tar -cavf "dawn-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || exit 1
+  tar -cavf "dawn-$OS-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || exit 1
 fi

@@ -21,8 +21,8 @@ jobs:
         run: |
           echo DAWN_COMMIT=`git ls-remote https://dawn.googlesource.com/dawn HEAD | awk '{ print $1 }'` >> ${GITHUB_OUTPUT}
           echo BUILD_DATE=`date +'%Y-%m-%d'` >> ${GITHUB_OUTPUT}
-      
-  build:
+
+  build-win:
     runs-on: windows-2025
     needs: info
     strategy:
@@ -44,14 +44,73 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: dawn-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
-          path: dawn-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          name: dawn-win-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-win-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          if-no-files-found: error
+          compression-level: 0
+
+  build-mac:
+    runs-on: macos-latest
+    needs: info
+    strategy:
+      matrix:
+        arch: [arm64]
+    env:
+      DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
+      BUILD_DATE: ${{ needs.info.outputs.BUILD_DATE }}
+    steps:
+
+      - name: Update XCode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run Build Script
+        id: build
+        shell: bash
+        run: bash build.sh mac ${{ matrix.arch }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: dawn-mac-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-mac-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          if-no-files-found: error
+          compression-level: 0
+
+  build-linux:
+    runs-on: ubuntu-24.04
+    needs: info
+    strategy:
+      matrix:
+        arch: [x64]
+    env:
+      DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
+      BUILD_DATE: ${{ needs.info.outputs.BUILD_DATE }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run Build Script
+        id: build
+        shell: bash
+        run: bash build.sh linux ${{ matrix.arch }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: dawn-linux-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-linux-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
           if-no-files-found: error
           compression-level: 0
 
   release:
     runs-on: ubuntu-24.04
-    needs: [info, build]
+    needs: [info, build-win, build-mac, build-linux]
     permissions:
       contents: write
     env:

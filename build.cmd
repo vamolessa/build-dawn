@@ -170,5 +170,5 @@ if "%GITHUB_WORKFLOW%" neq "" (
   rem GitHub actions stuff
   rem
 
-  tar.exe -cavf dawn-%TARGET_ARCH%-%BUILD_DATE%.zip dawn-%TARGET_ARCH% || exit /b 1
+  tar.exe -cavf dawn-win-%TARGET_ARCH%-%BUILD_DATE%.zip dawn-%TARGET_ARCH% || exit /b 1
 )
