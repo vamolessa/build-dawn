@@ -89,9 +89,9 @@ git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/d
 echo "configure dawn build"
 
 if [ "$OS" = "mac" ]; then
-  METAL_SWITCH=ON
+  MAC_SWITCH=ON
 else
-  METAL_SWITCH=OFF
+  MAC_SWITCH=OFF
 fi
 
   # taken out from right before the first `-D`
@@ -107,6 +107,7 @@ cmake                                         \
   -D CMAKE_POLICY_DEFAULT_CMP0092=NEW         \
   -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
   -D ABSL_MSVC_STATIC_RUNTIME=ON              \
+  -D DAWN_TARGET_MACOS=$MAC_SWITCH            \
   -D DAWN_BUILD_SAMPLES=OFF                   \
   -D DAWN_BUILD_TESTS=OFF                     \
   -D DAWN_ENABLE_D3D12=OFF                    \
@@ -115,8 +116,9 @@ cmake                                         \
   -D DAWN_ENABLE_DESKTOP_GL=OFF               \
   -D DAWN_ENABLE_OPENGLES=OFF                 \
   -D DAWN_ENABLE_VULKAN=ON                    \
-  -D DAWN_ENABLE_METAL=$METAL_SWITCH          \
+  -D DAWN_ENABLE_METAL=$MAC_SWITCH            \
   -D DAWN_USE_GLFW=OFF                        \
+  -D DAWN_USE_X11=OFF                         \
   -D DAWN_ENABLE_SPIRV_VALIDATION=OFF         \
   -D DAWN_DXC_ENABLE_ASSERTS_IN_NDEBUG=OFF    \
   -D DAWN_USE_BUILT_DXC=ON                    \
@@ -127,7 +129,7 @@ cmake                                         \
   -D TINT_BUILD_SPV_WRITER=ON                 \
   -D TINT_BUILD_WGSL_WRITER=ON                \
   -D TINT_BUILD_GLSL_WRITER=ON                \
-  -D TINT_BUILD_MSL_WRITER=$METAL_SWITCH      \
+  -D TINT_BUILD_MSL_WRITER=$MAC_SWITCH        \
   -D TINT_BUILD_CMD_TOOLS=ON                  \
   || die "could not cmake configure dawn"
 
