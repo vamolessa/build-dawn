@@ -57,8 +57,8 @@ if [ ! -e "dawn" ]; then
   git -C dawn remote add origin https://dawn.googlesource.com/dawn || die "could not init dawn git repo"
 fi
 
-git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || die "could not fetch from dawn git repo"
-git -C dawn reset --hard FETCH_HEAD                            || die "could not fetch from dawn git repo"
+git -C dawn fetch --no-recurse-submodules origin "$DAWN_COMMIT" || die "could not fetch from dawn git repo"
+git -C dawn reset --hard FETCH_HEAD                             || die "could not fetch from dawn git repo"
 
 if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
   git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || die "could not reset dxc git"
