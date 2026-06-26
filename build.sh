@@ -1,13 +1,15 @@
+#!/bin/sh
+
 cd "$(dirname "$0")"
 
 #
 # build architecture
 #
 
-PROCESSOR_ARCHITECTURE = $(uname -m)
+PROCESSOR_ARCHITECTURE=$(uname -m)
 if [ "$PROCESSOR_ARCHITECTURE" = "x86_64" ]; then
   HOST_ARCH="x64"
-elif [ "$PROCESSOR_ARCHITECTURE" = "arm64" -o "$PROCESSOR_ARCHITECTURE" = "aarch64" ]; then
+elif [ "$PROCESSOR_ARCHITECTURE" = "arm64" ] || [ "$PROCESSOR_ARCHITECTURE" = "aarch64" ]; then
   HOST_ARCH="arm64"
 fi
 
@@ -20,9 +22,9 @@ elif [ "$2" = "arm64" ]; then
 elif [ -n "$2" ]; then
   echo "Unknown target '$2' architecture"
   exit 1
-) else (
+else
   TARGET_ARCH="$HOST_ARCH"
-)
+fi
 
 #
 # dependencies
@@ -77,8 +79,8 @@ fi
 
 cmake                                         \
   -S dawn                                     \
-  -B dawn.build-$TARGET_ARCH                  \
-  -A $TARGET_ARCH                             \
+  -B "dawn.build-$TARGET_ARCH"                \
+  -A "$TARGET_ARCH"                           \
   -D CMAKE_BUILD_TYPE=Release                 \
   -D CMAKE_POLICY_DEFAULT_CMP0091=NEW         \
   -D CMAKE_POLICY_DEFAULT_CMP0092=NEW         \
