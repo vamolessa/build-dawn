@@ -38,7 +38,7 @@ jobs:
             os_kind: mac
             arch: arm64
 
-    name: Build-${{ matrix.os }}-${{ matrix.arch }}
+    name: build-${{ matrix.os }}-${{ matrix.arch }}
     needs: info
     env:
       DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
@@ -76,7 +76,7 @@ jobs:
 
   release:
     runs-on: ubuntu-24.04
-    needs: [info, build-win, build-mac, build-linux]
+    needs: [info, build]
     permissions:
       contents: write
     env:
