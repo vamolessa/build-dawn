@@ -2,3 +2,5 @@
 /dawn-*
 /dawn.build-*
 /*.zip
+
+!dawn-ci.cmake
