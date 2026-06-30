@@ -15,7 +15,8 @@ if not exist dawn (
   call git -C dawn remote add origin https://dawn.googlesource.com/dawn || exit /b 1
 )
 
-call git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit /b 1
+rem call git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit /b 1
+call git -C dawn fetch origin %DAWN_COMMIT%                         || exit /b 1
 call git -C dawn reset --hard FETCH_HEAD                            || exit /b 1
 
 if exist dawn\third_party\directx-shader-compiler\src call git -C dawn\third_party\directx-shader-compiler\src reset --hard HEAD || exit /b 1
