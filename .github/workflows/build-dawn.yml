@@ -28,17 +28,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: windows-2025
-            os_kind: win
+          - os: win
+            img: windows-2025
             arch: x64
-          - os: windows-2025
-            os_kind: win
+          - os: win
+            img: windows-2025
             arch: arm64
-          - os: windows-2025
-            os_kind: mac
+          - os: mac
+            img: windows-2025
             arch: arm64
 
     name: build-${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.img }}
     needs: info
     env:
       DAWN_COMMIT: ${{ needs.info.outputs.DAWN_COMMIT }}
@@ -46,7 +47,7 @@ jobs:
     steps:
 
       - name: Update XCode
-        if: matrix.os_kind == 'mac'
+        if: matrix.os == 'mac'
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
@@ -55,22 +56,22 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run Build Script Cmd
-        if: matrix.os_kind == 'win'
+        if: matrix.os == 'win'
         id: build
         shell: cmd
         run: call build.cmd ${{ matrix.arch }}
 
       - name: Run Build Script Bash
-        if: matrix.os_kind != 'win'
+        if: matrix.os != 'win'
         id: build
         shell: bash
-        run: bash build.sh ${{ matrix.os_kind }} ${{ matrix.arch }}
+        run: bash build.sh ${{ matrix.os }} ${{ matrix.arch }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: dawn-${{ matrix.os_kind }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
-          path: dawn-${{ matrix.os_kind }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          name: dawn-${{ matrix.os }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
+          path: dawn-${{ matrix.os }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
           if-no-files-found: error
           compression-level: 0
 
