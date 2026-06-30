@@ -57,13 +57,13 @@ jobs:
 
       - name: Run Build Script Cmd
         if: matrix.os == 'win'
-        id: build
+        id: build_on_cmd
         shell: cmd
         run: call build.cmd ${{ matrix.arch }}
 
       - name: Run Build Script Bash
         if: matrix.os != 'win'
-        id: build
+        id: build_on_bash
         shell: bash
         run: bash build.sh ${{ matrix.os }} ${{ matrix.arch }}
 
