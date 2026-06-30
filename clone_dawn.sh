@@ -19,7 +19,7 @@ if [ ! -e "dawn" ]; then
 fi
 
 #git -C dawn fetch --no-recurse-submodules origin "$DAWN_COMMIT" || die "could not fetch from dawn git repo"
-git -C dawn fetch origin "$DAWN_COMMIT"                         || die "could not fetch from dawn git repo"
+git -C dawn fetch --all origin "$DAWN_COMMIT"                   || die "could not fetch from dawn git repo"
 git -C dawn reset --hard FETCH_HEAD                             || die "could not fetch from dawn git repo"
 
 if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then

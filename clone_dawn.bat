@@ -16,7 +16,7 @@ if not exist dawn (
 )
 
 rem call git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit /b 1
-call git -C dawn fetch origin %DAWN_COMMIT%                         || exit /b 1
+call git -C dawn fetch --all origin %DAWN_COMMIT%                   || exit /b 1
 call git -C dawn reset --hard FETCH_HEAD                            || exit /b 1
 
 if exist dawn\third_party\directx-shader-compiler\src call git -C dawn\third_party\directx-shader-compiler\src reset --hard HEAD || exit /b 1
