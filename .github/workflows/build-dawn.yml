@@ -35,7 +35,7 @@ jobs:
             img: windows-2025
             arch: arm64
           - os: mac
-            img: windows-2025
+            img: macos-latest
             arch: arm64
 
     name: build-${{ matrix.os }}-${{ matrix.arch }}
