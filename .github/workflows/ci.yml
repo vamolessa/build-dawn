@@ -101,15 +101,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Clone Dawn cmd
-        if: matrix.os == 'windows-latest'
-        shell: cmd
-        run: call clone_dawn.bat
-
-      - name: Clone Dawn sh
-        if: matrix.os != 'windows-latest'
-        shell: bash
-        run: bash clone_dawn.sh
+      - uses: actions/checkout@v7
+        repository: https://github.com/google/dawn
+        path: dawn
+        lfs: true
+        submodules: recursive
 
       - name: Extract Windows SDK build version
         if: matrix.os == 'windows-latest'
