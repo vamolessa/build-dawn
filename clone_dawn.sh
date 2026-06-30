@@ -22,14 +22,14 @@ fi
 git -C dawn fetch origin "$DAWN_COMMIT"                         || die "could not fetch from dawn git repo"
 git -C dawn reset --hard FETCH_HEAD                             || die "could not fetch from dawn git repo"
 
-if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
-  git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || die "could not reset dxc git"
-fi
+#if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
+  #git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || die "could not reset dxc git"
+#fi
 
 #command -v python && python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 
-git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
-git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
+#git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
+#git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
 
 echo "DAWN CLONED!"
 

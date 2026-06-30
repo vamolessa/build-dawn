@@ -19,12 +19,12 @@ rem call git -C dawn fetch --no-recurse-submodules origin %DAWN_COMMIT% || exit 
 call git -C dawn fetch origin %DAWN_COMMIT%                         || exit /b 1
 call git -C dawn reset --hard FETCH_HEAD                            || exit /b 1
 
-if exist dawn\third_party\directx-shader-compiler\src call git -C dawn\third_party\directx-shader-compiler\src reset --hard HEAD || exit /b 1
+rem if exist dawn\third_party\directx-shader-compiler\src call git -C dawn\third_party\directx-shader-compiler\src reset --hard HEAD || exit /b 1
 
 rem call python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 
-call git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || exit /b 1
-call git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || exit /b 1
+rem call git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || exit /b 1
+rem call git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || exit /b 1
 
 echo DAWN CLONED!
 
