@@ -102,10 +102,11 @@ jobs:
           persist-credentials: false
 
       - uses: actions/checkout@v7
-        repository: https://github.com/google/dawn
-        path: dawn
-        lfs: true
-        submodules: recursive
+        with:
+          repository: https://github.com/google/dawn
+          path: dawn
+          lfs: true
+          submodules: recursive
 
       - name: Extract Windows SDK build version
         if: matrix.os == 'windows-latest'
