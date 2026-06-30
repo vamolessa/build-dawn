@@ -7,8 +7,7 @@ die() {
   exit 1
 }
 
-command -v git     || die "'git' not found"
-command -v python  || die "'python' not found"
+command -v git || die "'git' not found"
 
 if [ -z "$DAWN_COMMIT" ]; then
   DAWN_COMMIT=$(git ls-remote https://dawn.googlesource.com/dawn HEAD | awk '{print $1}')
@@ -26,7 +25,11 @@ if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
   git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || die "could not reset dxc git"
 fi
 
-python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
+if [ command -v python ]; then
+  python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
+else
+  echo "python not found"
+fi
 
 git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
 git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
