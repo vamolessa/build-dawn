@@ -97,13 +97,13 @@ jobs:
       SCCACHE_GHA_ENABLED: "true"
 
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          persist-credentials: false
+      - name: Checkout Self
+        uses: actions/checkout@v7
 
-      - uses: actions/checkout@v7
+      - name: Checkout Dawn
+        uses: actions/checkout@v7
         with:
-          repository: https://github.com/google/dawn
+          repository: google/dawn
           path: dawn
           lfs: true
           submodules: recursive
