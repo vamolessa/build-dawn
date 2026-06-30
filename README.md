@@ -1,3 +1,7 @@
+Testing taking `dawn-ci.cmake`, `ci.yml` and `release.yml` directly from github.com/google/dawn
+
+----
+
 Automatic weekly build of [dawn][] WebGPU implementation for 64-bit Windows (x64 and arm64).
 
 Build produces single `webgpu_dawn.dll` file that exports all public Dawn WebGPU C functions.
