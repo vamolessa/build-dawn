@@ -7,15 +7,16 @@ die() {
   exit 1
 }
 
-command -v git || die "'git' not found"
+#REPO_URL="https://dawn.googlesource.com/dawn"
+REPO_URL="https://github.com/google/dawn"
 
 if [ -z "$DAWN_COMMIT" ]; then
-  DAWN_COMMIT=$(git ls-remote https://dawn.googlesource.com/dawn HEAD | awk '{print $1}')
+  DAWN_COMMIT=$(git ls-remote "$REPO_URL" HEAD | awk '{print $1}')
 fi
 
 if [ ! -e "dawn" ]; then
-  git init dawn                                                    || die "could not init dawn git repo"
-  git -C dawn remote add origin https://dawn.googlesource.com/dawn || die "could not init dawn git repo"
+  git init dawn                             || die "could not init dawn git repo"
+  git -C dawn remote add origin "$REPO_URL" || die "could not init dawn git repo"
 fi
 
 #git -C dawn fetch --no-recurse-submodules origin "$DAWN_COMMIT" || die "could not fetch from dawn git repo"

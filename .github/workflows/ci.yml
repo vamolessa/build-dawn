@@ -100,12 +100,22 @@ jobs:
       - name: Checkout Self
         uses: actions/checkout@v7
 
-      - name: Checkout Dawn
-        uses: actions/checkout@v7
-        with:
-          repository: google/dawn
-          path: dawn
-          submodules: recursive
+      #- name: Checkout Dawn
+        #uses: actions/checkout@v7
+        #with:
+          #repository: google/dawn
+          #path: dawn
+          #submodules: recursive
+
+      - name: Clone Dawn cmd
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: call clone_dawn.bat
+
+      - name: Clone Dawn sh
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: bash clone_dawn.sh
 
       - name: Extract Windows SDK build version
         if: matrix.os == 'windows-latest'
