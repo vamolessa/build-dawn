@@ -25,11 +25,7 @@ if [ -e "dawn/third_party/directx-shader-compiler/src" ]; then
   git -C "dawn/third_party/directx-shader-compiler/src" reset --hard HEAD || die "could not reset dxc git"
 fi
 
-if [ command -v python ]; then
-  python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
-else
-  echo "python not found"
-fi
+#command -v python && python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 
 git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
 git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
