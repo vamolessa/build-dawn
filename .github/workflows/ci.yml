@@ -105,7 +105,6 @@ jobs:
         with:
           repository: google/dawn
           path: dawn
-          lfs: true
           submodules: recursive
 
       - name: Extract Windows SDK build version
