@@ -91,7 +91,7 @@ echo "configure dawn build"
 
 if [ "$OS" = "mac" ]; then
   MAC_SWITCH=ON
-  CMAKE_FLAGS="-GXcode"
+  CMAKE_FLAGS="" # TODO: delete this
 else
   MAC_SWITCH=OFF
   CMAKE_FLAGS=""
