@@ -169,11 +169,11 @@ fi
 #
 
 echo "run the full dawn build"
-
-#CL=/Zi /Wv:18
-#LINK=/OPT:REF /OPT:ICF /DEBUG /PDBALTPATH:%%_PDB%% /PDBSTRIPPED
 cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || die "could not cmake build dawn"
-cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH"
+
+echo "install dawn build"
+rm -rf "dawn.install-$TARGET_ARCH"
+cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH" || die "could not cmake install dawn"
 
 #
 # prepare output folder
