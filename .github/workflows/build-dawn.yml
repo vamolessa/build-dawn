@@ -52,6 +52,12 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      - name: Update Mac Env
+        if: matrix.os == 'mac'
+        run: |
+          brew reinstall cmake
+          brew install llvm
+
       - name: Checkout
         uses: actions/checkout@v6
 
