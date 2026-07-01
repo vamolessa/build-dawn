@@ -91,10 +91,8 @@ echo "configure dawn build"
 
 if [ "$OS" = "mac" ]; then
   MAC_SWITCH=ON
-  CMAKE_FLAGS="-GNinja"
 else
   MAC_SWITCH=OFF
-  CMAKE_FLAGS=""
 fi
 
   # taken out from right before the first `-D` since makefile target does not support it
@@ -103,7 +101,7 @@ fi
 cmake                                         \
   -S dawn                                     \
   -B "dawn.build-$TARGET_ARCH"                \
-  $CMAKE_FLAGS                                \
+  -G Ninja                                    \
   -D CMAKE_C_COMPILER=clang                   \
   -D CMAKE_CXX_COMPILER=clang++               \
   -D CMAKE_BUILD_TYPE=Release                 \
@@ -175,6 +173,7 @@ echo "run the full dawn build"
 #CL=/Zi /Wv:18
 #LINK=/OPT:REF /OPT:ICF /DEBUG /PDBALTPATH:%%_PDB%% /PDBSTRIPPED
 cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || die "could not cmake build dawn"
+cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH"
 
 #
 # prepare output folder
@@ -194,7 +193,7 @@ echo "================================================"
 echo "================================================"
 echo ""
 
-ls -R "dawn.build-$TARGET_ARCH/"
+ls -R "dawn.install-$TARGET_ARCH/"
 
 echo ""
 echo "================================================"
@@ -203,10 +202,15 @@ echo "================================================"
 echo "================================================"
 echo "================================================"
 
+if [ "$OS" = "mac" ]; then
+  DLL_EXT=dylib
+else
+  DLL_EXT=so
+fi
 
-cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"    "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
-cp -f "dawn.build-$TARGET_ARCH/Release/libwebgpu_dawn.dylib" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
-cp -f "dawn.build-$TARGET_ARCH/Release/tint"                 "dawn-$TARGET_ARCH" || die "could not copy tint"
+cp -f "dawn.install-$TARGET_ARCH/gen/include/dawn/webgpu.h"       "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
+cp -f "dawn.install-$TARGET_ARCH/Release/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
+cp -f "dawn.install-$TARGET_ARCH/Release/tint"                    "dawn-$TARGET_ARCH" || die "could not copy tint"
 
 #
 # Done!
