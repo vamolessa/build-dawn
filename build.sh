@@ -91,8 +91,10 @@ echo "configure dawn build"
 
 if [ "$OS" = "mac" ]; then
   MAC_SWITCH=ON
+  CMAKE_FLAGS="-GXcode"
 else
   MAC_SWITCH=OFF
+  CMAKE_FLAGS=""
 fi
 
   # taken out from right before the first `-D` since makefile target does not support it
@@ -101,6 +103,7 @@ fi
 cmake                                         \
   -S dawn                                     \
   -B "dawn.build-$TARGET_ARCH"                \
+  $CMAKE_FLAGS                                \
   -D CMAKE_C_COMPILER=clang                   \
   -D CMAKE_CXX_COMPILER=clang++               \
   -D CMAKE_BUILD_TYPE=Release                 \
