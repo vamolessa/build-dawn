@@ -187,6 +187,23 @@ mkdir "dawn-$TARGET_ARCH"
 
 echo "$DAWN_COMMIT" > "dawn-$TARGET_ARCH/commit.txt"
 
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo ""
+
+ls -R "dawn.build-$TARGET_ARCH/"
+
+echo ""
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+
+
 cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"    "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
 cp -f "dawn.build-$TARGET_ARCH/Release/libwebgpu_dawn.dylib" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
 cp -f "dawn.build-$TARGET_ARCH/Release/tint"                 "dawn-$TARGET_ARCH" || die "could not copy tint"
