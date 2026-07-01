@@ -78,10 +78,10 @@ python "dawn/tools/fetch_dawn_dependencies.py" --directory dawn
 # patches
 #
 
-echo "patches"
+#echo "patches"
 
-git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
-git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
+#git apply -p1 --directory=dawn                                         patches/dawn-static-dxc-lib.patch || die "could not apply dawn-static-dxc-lib patch"
+#git apply -p1 --directory=dawn/third_party/directx-shader-compiler/src patches/dxc-static-build.patch    || die "could not apply dxc-static-build patch"
 
 #
 # configure dawn build
