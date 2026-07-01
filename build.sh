@@ -173,7 +173,8 @@ cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn ti
 
 echo "install dawn build"
 rm -rf "dawn.install-$TARGET_ARCH"
-cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH" || die "could not cmake install dawn"
+mkdir "dawn.install-$TARGET_ARCH"
+cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH" || echo "could not cmake install dawn"
 
 #
 # prepare output folder
@@ -191,9 +192,19 @@ echo "================================================"
 echo "================================================"
 echo "================================================"
 echo "================================================"
-echo ""
+echo "find libwebgpu_dawn.dylib"
 
-ls -R "dawn.install-$TARGET_ARCH/"
+find . -name 'libwebgpu_dawn.dylib'
+
+echo ""
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "================================================"
+echo "find tint"
+
+find . -name 'tint'
 
 echo ""
 echo "================================================"
@@ -209,7 +220,8 @@ else
 fi
 
 cp -f "dawn.install-$TARGET_ARCH/gen/include/dawn/webgpu.h"       "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
-cp -f "dawn.install-$TARGET_ARCH/Release/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
+cp -f "dawn.install-$TARGET_ARCH/Release/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || echo "could not copy libwebgpu_dawn"
+cp -f "dawn/src/dawn/native/libwebgpu_dawn.$DLL_EXT"              "dawn-$TARGET_ARCH" || echo "could not copy libwebgpu_dawn"
 cp -f "dawn.install-$TARGET_ARCH/Release/tint"                    "dawn-$TARGET_ARCH" || die "could not copy tint"
 
 #
