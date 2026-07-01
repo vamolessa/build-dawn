@@ -189,7 +189,7 @@ else
 fi
 
 # helper for finding required files
-if false; then
+if true; then
   echo "================================================"
   echo "================================================"
   echo "================================================"
@@ -217,9 +217,9 @@ if false; then
   echo "================================================"
 fi
 
-cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"           "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
-cp -f "dawn.build-$TARGET_ARCH/dawn/native/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
-cp -f "dawn.build-$TARGET_ARCH/tint"                                "dawn-$TARGET_ARCH" || die "could not copy tint"
+cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"               "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
+cp -f "dawn.build-$TARGET_ARCH/src/dawn/native/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
+cp -f "dawn.build-$TARGET_ARCH/tint"                                    "dawn-$TARGET_ARCH" || die "could not copy tint"
 
 #
 # Done!
