@@ -171,11 +171,6 @@ fi
 echo "run the full dawn build"
 cmake --build "dawn.build-$TARGET_ARCH" --config Release --target webgpu_dawn tint_cmd_tint_cmd --parallel || die "could not cmake build dawn"
 
-echo "install dawn build"
-rm -rf "dawn.install-$TARGET_ARCH"
-mkdir "dawn.install-$TARGET_ARCH"
-cmake --install "dawn.build-$TARGET_ARCH" --config Release --prefix "dawn.install-$TARGET_ARCH" || echo "could not cmake install dawn"
-
 #
 # prepare output folder
 #
@@ -187,42 +182,44 @@ mkdir "dawn-$TARGET_ARCH"
 
 echo "$DAWN_COMMIT" > "dawn-$TARGET_ARCH/commit.txt"
 
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "find libwebgpu_dawn.dylib"
-
-find . -name 'libwebgpu_dawn.dylib'
-
-echo ""
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "find tint"
-
-find . -name 'tint' -type f
-
-echo ""
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-echo "================================================"
-
 if [ "$OS" = "mac" ]; then
   DLL_EXT=dylib
 else
   DLL_EXT=so
 fi
 
-cp -f "dawn.install-$TARGET_ARCH/gen/include/dawn/webgpu.h"       "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
-cp -f "dawn.install-$TARGET_ARCH/Release/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || echo "could not copy libwebgpu_dawn"
-cp -f "dawn/src/dawn/native/libwebgpu_dawn.$DLL_EXT"              "dawn-$TARGET_ARCH" || echo "could not copy libwebgpu_dawn"
-cp -f "dawn.install-$TARGET_ARCH/Release/tint"                    "dawn-$TARGET_ARCH" || die "could not copy tint"
+# helper for finding required files
+if false; then
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "find libwebgpu_dawn.$DLL_EXT"
+
+  find . -name 'libwebgpu_dawn.$DLL_EXT'
+
+  echo ""
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "find tint"
+
+  find . -name 'tint' -type f
+
+  echo ""
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+  echo "================================================"
+fi
+
+cp -f "dawn.build-$TARGET_ARCH/gen/include/dawn/webgpu.h"           "dawn-$TARGET_ARCH" || die "could not copy webgpu.h"
+cp -f "dawn.build-$TARGET_ARCH/dawn/native/libwebgpu_dawn.$DLL_EXT" "dawn-$TARGET_ARCH" || die "could not copy libwebgpu_dawn"
+cp -f "dawn.build-$TARGET_ARCH/tint"                                "dawn-$TARGET_ARCH" || die "could not copy tint"
 
 #
 # Done!
