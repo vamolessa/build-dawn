@@ -1,4 +1,7 @@
-Testing taking `dawn-ci.cmake`, `ci.yml` and `release.yml` directly from github.com/google/dawn
+EDITS:
+- build for macos and linux
+- enable vulkan
+- enable metal
 
 ----
 

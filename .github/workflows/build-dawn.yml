@@ -4,10 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
-  # TODO: delete this
-  #push:
-    #branches:
-      #- main
+  push:
+    branches:
+      - main
 
 jobs:
   info:
@@ -37,6 +36,9 @@ jobs:
           - os: mac
             img: macos-latest
             arch: arm64
+          - os: linux
+            img: ubuntu-24.04
+            arch: x64
 
     name: build-${{ matrix.os }}-${{ matrix.arch }}
     runs-on: ${{ matrix.img }}
