@@ -235,5 +235,5 @@ if [ -n "$GITHUB_WORKFLOW" ]; then
 
   echo "GitHub actions stuff"
 
-  tar -cavf "dawn-$OS-$TARGET_ARCH-$BUILD_DATE.zip" "dawn-$TARGET_ARCH" || die "could not create final tar"
+  tar -cavf "dawn-$OS-$TARGET_ARCH.zip" "dawn-$TARGET_ARCH" || die "could not create final tar"
 fi
