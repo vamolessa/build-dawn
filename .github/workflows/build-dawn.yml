@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
-  push:
-    branches:
-      - main
 
 jobs:
   info:
@@ -78,8 +75,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: dawn-${{ matrix.os }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}
-          path: dawn-${{ matrix.os }}-${{ matrix.arch }}-${{ needs.info.outputs.BUILD_DATE }}.zip
+          name: dawn-${{ matrix.os }}-${{ matrix.arch }}
+          path: dawn-${{ matrix.os }}-${{ matrix.arch }}.zip
           if-no-files-found: error
           compression-level: 0
 
@@ -104,4 +101,4 @@ jobs:
           merge-multiple: true
 
       - name: Upload Artifacts to GitHub Release
-        run: gh release upload '${{ needs.info.outputs.BUILD_DATE }}' dawn-*-${{ needs.info.outputs.BUILD_DATE }}.zip -R "${GITHUB_REPOSITORY}"
+        run: gh release upload '${{ needs.info.outputs.BUILD_DATE }}' dawn-*-*.zip -R "${GITHUB_REPOSITORY}"
