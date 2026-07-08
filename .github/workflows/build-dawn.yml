@@ -97,7 +97,7 @@ jobs:
       - name: Get Artifacts From Build Steps
         uses: actions/download-artifact@v8
         with:
-          pattern: dawn-*-${{ needs.info.outputs.BUILD_DATE }}
+          pattern: dawn-*-*
           merge-multiple: true
 
       - name: Upload Artifacts to GitHub Release
